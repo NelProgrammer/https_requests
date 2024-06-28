@@ -6,23 +6,23 @@ import DeleteConfirmation from './components/DeleteConfirmation.jsx';
 import logoImg from './assets/logo.png';
 import AvailablePlaces from './components/AvailablePlaces.jsx';
 
-function App() {
+const App = () => {
   const selectedPlace = useRef();
 
   const [userPlaces, setUserPlaces] = useState([]);
 
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
-  function handleStartRemovePlace(place) {
+  const handleStartRemovePlace = (place) => {
     setModalIsOpen(true);
     selectedPlace.current = place;
-  }
+  };
 
-  function handleStopRemovePlace() {
+  const handleStopRemovePlace = () => {
     setModalIsOpen(false);
-  }
+  };
 
-  function handleSelectPlace(selectedPlace) {
+  const handleSelectPlace = (selectedPlace) => {
     setUserPlaces((prevPickedPlaces) => {
       if (!prevPickedPlaces) {
         prevPickedPlaces = [];
@@ -32,7 +32,7 @@ function App() {
       }
       return [selectedPlace, ...prevPickedPlaces];
     });
-  }
+  };
 
   const handleRemovePlace = useCallback(async function handleRemovePlace() {
     setUserPlaces((prevPickedPlaces) =>
@@ -71,6 +71,6 @@ function App() {
       </main>
     </>
   );
-}
+};
 
 export default App;

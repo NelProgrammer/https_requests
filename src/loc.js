@@ -1,8 +1,8 @@
-function toRad(value) {
+const toRad = (value) => {
   return (value * Math.PI) / 180;
-}
+};
 
-function calculateDistance(lat1, lng1, lat2, lng2) {
+const calculateDistance = (lat1, lng1, lat2, lng2) => {
   const R = 6371;
   const dLat = toRad(lat2 - lat1);
   const dLon = toRad(lng2 - lng1);
@@ -15,9 +15,9 @@ function calculateDistance(lat1, lng1, lat2, lng2) {
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   const d = R * c;
   return d;
-}
+};
 
-export function sortPlacesByDistance(places, lat, lon) {
+const sortPlacesByDistance = (places, lat, lon) => {
   const sortedPlaces = [...places];
   sortedPlaces.sort((a, b) => {
     const distanceA = calculateDistance(lat, lon, a.lat, a.lon);
@@ -25,4 +25,4 @@ export function sortPlacesByDistance(places, lat, lon) {
     return distanceA - distanceB;
   });
   return sortedPlaces;
-}
+};
