@@ -50,4 +50,9 @@ app.use((req, res, next) => {
   res.status(404).json({ message: '404 - Not Found' });
 });
 
-app.listen(3000);
+// const port = process.env.PORT || 3000;
+const port = 3000;
+console.log(`Port: ${port}`);
+app.listen(port, () => {
+  console.log(`Sever at http://localhost:${port}`);
+});
