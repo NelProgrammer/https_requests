@@ -6,20 +6,26 @@ const AvailablePlaces = ({ onSelectPlace }) => {
   const [availablePlaces, setAvailablePlaces] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3000/places')
-      .then((response) => {
-        return response.json();
-      })
-      .then((resData) => {
-        setAvailablePlaces(resData.places);
-      });
+    const fetchPlaces = async () => {
+      // const response = await fetch('/places');
+      const response = await fetch('http://localhost:3001/places');
+      console.log(`**** Response Fetched.`);
+
+      const resData = await response.json();
+      console.log(`**** ResponseData Fetched.`);
+
+      setAvailablePlaces(resData.places);
+      console.log(`**** Available Places.`);
+    };
+
+    fetchPlaces();
   }, []);
 
   return (
     <Places
       title="Available Places"
       places={availablePlaces} // Replaced the blank Array with availablePlaces state Array.
-      fallbackText="No places available."
+      fallbackText="ReactJs:No places available."
       onSelectPlace={onSelectPlace}
     />
   );

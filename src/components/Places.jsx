@@ -1,5 +1,6 @@
 const Places = ({ title, places, fallbackText, onSelectPlace }) => {
-  console.log(places);
+  console.log(`****** Places.`);
+
   return (
     <section className="places-category">
       <h2>{title}</h2>
@@ -10,7 +11,7 @@ const Places = ({ title, places, fallbackText, onSelectPlace }) => {
             <li key={place.id} className="place-item">
               <button onClick={() => onSelectPlace(place)}>
                 <img
-                  src={`http://localhost:3000/${place.image.src}`}
+                  src={`http://localhost:3001/${place.image.src}`}
                   alt={place.image.alt}
                 />
                 <h3>{place.title}</h3>

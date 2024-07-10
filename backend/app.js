@@ -1,15 +1,15 @@
 import fs from 'node:fs/promises';
-
 import bodyParser from 'body-parser';
 import express from 'express';
+// import cors from 'cors';
 
 const app = express();
-
+// app.use(cors());
 app.use(express.static('images'));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // CORS
-
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*'); // allow all domains
   res.setHeader('Access-Control-Allow-Methods', 'GET, PUT');
@@ -18,28 +18,61 @@ app.use((req, res, next) => {
   next();
 });
 
+// READ '/places'
 app.get('/places', async (req, res) => {
-  const fileContent = await fs.readFile('./data/places.json');
+  try {
+    const filePath = new URL('./data/places.json', import.meta.url);
+    console.log(`** File Path.`);
 
-  const placesData = JSON.parse(fileContent);
+    const fileContent = await fs.readFile(filePath, { encoding: 'utf8' });
+    console.log(`** File contents.`);
 
-  res.status(200).json({ places: placesData });
+    const places = JSON.parse(fileContent);
+    console.log(`** JSON Parsed as places.`);
+
+    res.status(200).json({ places });
+    console.log(`** Res data.`);
+  } catch (err) {
+    console.error(err.message);
+  }
 });
 
+// READ '/user-places'
 app.get('/user-places', async (req, res) => {
-  const fileContent = await fs.readFile('./data/user-places.json');
+  try {
+    const filePath = new URL('./data/user-places.json', import.meta.url);
+    console.log(`** File Path.`);
 
-  const places = JSON.parse(fileContent);
+    const fileContent = await fs.readFile(filePath, { encoding: 'utf8' });
+    console.log(`** File contents.`);
 
-  res.status(200).json({ places });
+    const places = JSON.parse(fileContent);
+    console.log(`** JSON Parsed as places.`);
+
+    res.status(200).json({ places });
+    console.log(`** Res data.`);
+  } catch (err) {
+    console.error(err.message);
+  }
 });
 
+// WRITE '/user-places'
 app.put('/user-places', async (req, res) => {
-  const places = req.body.places;
+  try {
+    const places = req.body.places;
+    console.log(`** Places.`);
 
-  await fs.writeFile('./data/user-places.json', JSON.stringify(places));
+    const filePath = new URL('./data/user-places.json', import.meta.url);
+    console.log(`** File Path.`);
 
-  res.status(200).json({ message: 'User places updated!' });
+    await fs.writeFile(filePath, JSON.stringify(places));
+    console.log(`** Wrote to file.`);
+
+    res.status(200).json({ message: 'User places updated!' });
+    console.log(`** Res data.`);
+  } catch (err) {
+    console.error(err.message);
+  }
 });
 
 // 404
@@ -48,11 +81,15 @@ app.use((req, res, next) => {
     return next();
   }
   res.status(404).json({ message: '404 - Not Found' });
+  console.log(`** Res is 404.`);
 });
 
-// const port = process.env.PORT || 3000;
-const port = 3000;
-console.log(`Port: ${port}`);
-app.listen(port, () => {
-  console.log(`Sever at http://localhost:${port}`);
+// Port
+const port = process.env.PORT || 3001;
+console.log(`** Port: ${port}`);
+console.log(`** Process End Port: ${process.env.PORT}.`);
+
+// Server is up
+app.listen(+port, () => {
+  console.log(`** Sever is UP at http://localhost:${port}.`);
 });
