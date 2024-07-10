@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Places from './Places.jsx';
 import Error from './Error.jsx';
+import { sortPlacesByDistance } from '../loc.js';
 
 const AvailablePlaces = ({ onSelectPlace }) => {
   const [isFetching, setIsFetching] = useState(false);
@@ -23,19 +24,24 @@ const AvailablePlaces = ({ onSelectPlace }) => {
           throw new Error('Failed to fetch places.');
         }
 
-        console.log(`**** Set AvailablePlaces.`);
-        setAvailablePlaces(resData.places);
+        navigator.geolocation.getCurrentPosition((position) => {
+          const sortedPlaces = sortPlacesByDistance(
+            resData.places,
+            position.coords.latitude,
+            position.coords.longitude
+          );
+
+          console.log(`**** Set AvailablePlaces.`);
+          setAvailablePlaces(resData.places);
+          setIsFetching(false);
+        });
       } catch (error) {
         // Code if Error
         setError({
           message: error.message || 'Could not fetch places, try again latter.',
         });
-        console.log(`**** Set Error Message.`);
+        setIsFetching(false);
       }
-
-      console.log(`**** Available Places.`);
-
-      setIsFetching(false); // Outside to ensure we still change fetching state even if there's an error.
     };
 
     fetchPlaces();
