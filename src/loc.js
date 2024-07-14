@@ -26,3 +26,5 @@ const sortPlacesByDistance = (places, lat, lon) => {
   });
   return sortedPlaces;
 };
+
+export default sortPlacesByDistance;
